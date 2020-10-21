@@ -8,12 +8,12 @@
             <i class="iconfont icon-person"></i>
           </div>
           <div class="user-info">
-            <p class="user-info-top">登录/注册</p>
+            <p class="user-info-top">{{userInfo._id || "登录/注册"}}</p>
             <p>
                 <span class="user-icon">
                   <i class="iconfont icon-shouji icon-mobile"></i>
                 </span>
-              <span class="icon-mobile-number">暂无绑定手机号</span>
+              <span class="icon-mobile-number">{{userInfo.phone || '暂无绑定手机号'}}</span>
             </p>
           </div>
           <span class="arrow">
@@ -90,14 +90,38 @@
         </a>
       </section>
     </section>
+
+    <section class="profile_info_data border-1px" v-if="userInfo._id">
+      <mt-button type="danger" style="width: 100%" @click="loginOut">退出登陆</mt-button>
+    </section>
   </div>
 </template>
 
 <script>
 import HeaderTop from '../../components/HeaderTop/HeaderTop'
+import {mapState} from "vuex"
+import {MessageBox,Toast} from "mint-ui"
+
 export default {
   components:{
     HeaderTop,
+  },
+  computed:{
+    ...mapState(["userInfo"])
+  },
+  methods:{
+    loginOut(){
+      MessageBox.confirm("确认退出？").then(
+        action=>{
+        //点击确认时调用的回调函数
+        /*console.log("点击了确定")*/
+        this.$store.dispatch("clearUserInfo")
+        Toast("登出成功")
+      },action=>{
+        //点击取消时调用的回调函数
+        console.log("点击了取消")
+      })
+    }
   }
 }
 </script>

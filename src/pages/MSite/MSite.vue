@@ -3,11 +3,14 @@
     <section class="msite">
       <!--首页头部-->
       <HeaderTop :title="address.name">
-        <span class="header_search" slot="left">
+        <router-link class="header_search" slot="left" to="/search">
             <i class="iconfont icon-sousuo"></i>
+          </router-link>
+        <span class="header_login" slot="right" v-if="!userInfo._id">
+            <router-link class="header_login_text" to="/login">登录|注册</router-link>
           </span>
-        <span class="header_login" slot="right">
-            <span class="header_login_text">登录|注册</span>
+        <span class="header_login" slot="right" v-else>
+            <i class="iconfont icon-person"></i>
           </span>
       </HeaderTop>
       <!--首页导航-->
@@ -61,7 +64,7 @@ export default {
     this.$store.dispatch("getShops")
   },
   computed: {
-    ...mapState(["address"]),
+    ...mapState(["address","userInfo"]),
     ...mapGetters(["getPageArrs"])
   },
   watch: {

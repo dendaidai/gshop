@@ -2,12 +2,16 @@ import {
   reqAddress,
   reqFoodCategorys,
   reqShops,
+  reqUserInfo,
+  reqLogout,
 } from "../api/index"
 
 import {
   RECEIVE_ADDRESS,
   RECEIVE_CATEGORYS,
   RECEIVE_SHOPS,
+  RECEIVE_USER_INFO,
+  RESET_USER_INFO,
 } from "./mutations-types"
 
 export default {
@@ -46,4 +50,26 @@ export default {
     }
 
   },
+
+  //得到用户信息
+  getUserInfo({commit},userInfo){
+    commit(RECEIVE_USER_INFO,{userInfo})
+  },
+
+  //根据会话获取用户信息
+  async getSessionUserInfo({commit}){
+    const rs = await reqUserInfo()
+    if(rs.code===0){
+      const userInfo = rs.data
+      commit(RECEIVE_USER_INFO,{userInfo})
+    }
+  },
+
+  //清除用户信息
+  async clearUserInfo({commit}){
+    const rs = await reqLogout()
+    if(rs.code===0){
+      commit(RESET_USER_INFO)
+    }
+  }
 }
