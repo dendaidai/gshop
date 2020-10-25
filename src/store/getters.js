@@ -24,5 +24,21 @@ export default {
     temp = []
 
     return allArr
-  }
+  },
+
+  //计算购物车中食物的数量
+  totalCount(state){
+    const count = state.cartFoods.reduce((totalCount,food)=>{
+      return totalCount+food.count
+    },0)
+    return count
+  },
+
+  //计算购物车中的总价格
+  totalPrice(state){
+    const price = state.cartFoods.reduce((totalPrice,food)=>{
+      return totalPrice+food.count*food.price
+    },0)
+    return price
+  },
 }

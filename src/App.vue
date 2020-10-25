@@ -20,6 +20,4 @@ export default {
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
-  #app
-    color : red
 </style>

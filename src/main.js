@@ -5,8 +5,16 @@ import App from './App'
 import router from "./router"
 import store from "./store/index"
 import {Button} from "mint-ui"
+import "./mock/mock"
+import VueLazyload from 'vue-lazyload'
+import loadingImg from './common/images/loading.gif'
+import "./filters/filters"
 
 Vue.config.productionTip = false
+
+Vue.use(VueLazyload, {
+  loading: loadingImg,
+})
 
 //注册为全局组件
 Vue.component(Button.name,Button)   //标签名mt-button

@@ -4,6 +4,10 @@ import {
   reqShops,
   reqUserInfo,
   reqLogout,
+  reqShopInfo,
+  reqShopRatings,
+  reqShopGoods,
+  reqSearchShop,
 } from "../api/index"
 
 import {
@@ -12,6 +16,12 @@ import {
   RECEIVE_SHOPS,
   RECEIVE_USER_INFO,
   RESET_USER_INFO,
+  RECEIVE_SHOP_GOODS,
+  RECEIVE_SHOP_RATINGS,
+  RECEIVE_SHOP_INFO,
+  INCREMENT_FOOD_COUNT,
+  DECREMENT_FOOD_COUNT,
+  RECEIVE_SEARCH_SHOP,
 } from "./mutations-types"
 
 export default {
@@ -71,5 +81,53 @@ export default {
     if(rs.code===0){
       commit(RESET_USER_INFO)
     }
-  }
+  },
+
+  //更新商品列表
+  async getGoods({commit},callback){
+    const rs = await reqShopGoods()
+    if(rs.code===0){
+      const goods = rs.data
+      commit(RECEIVE_SHOP_GOODS,{goods})
+      callback()
+    }
+  },
+
+  //更新评论列表
+  async getRatings({commit}){
+    const rs = await reqShopRatings()
+    if(rs.code===0){
+      const ratings = rs.data
+      commit(RECEIVE_SHOP_RATINGS,{ratings})
+    }
+  },
+
+  //更新商品信息
+  async getInfo({commit}){
+    const rs = await reqShopInfo()
+    if(rs.code===0){
+      const info = rs.data
+      commit(RECEIVE_SHOP_INFO,{info})
+    }
+  },
+
+  //更新食物数量
+  updateFoodCount({commit},{isAdd,food}){
+    if(isAdd){
+      commit(INCREMENT_FOOD_COUNT,{food})
+    }else {
+      commit(DECREMENT_FOOD_COUNT,{food})
+    }
+  },
+
+  //更新搜索的商品列表
+  async getSearchShop({commit,state},keyword){
+    const {latitude,longitude} = state
+    const localStirng  = `${latitude},${longitude}`
+    const rs = await reqSearchShop(localStirng,keyword)
+    if(rs.code===0){
+      const searchShops = rs.data
+      commit(RECEIVE_SEARCH_SHOP,{searchShops})
+    }
+  },
 }
